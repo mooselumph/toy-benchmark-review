@@ -6,7 +6,7 @@ Higher numbers are better.
 
 The setup command creates an empty Python virtual environment. The benchmark command
 runs a small trusted evaluator that reads the submitted number and writes Yukon's JSON
-score file to `.yukon/score.json`. The result also includes a `verificationTimeMs`
+score file to `score.json`. The result also includes a `verificationTimeMs`
 metric covering the time spent reading and validating the submission.
 
 ## Run locally
@@ -23,11 +23,11 @@ Or run the manifest commands directly:
 ```sh
 python3 -m venv .venv
 .venv/bin/python benchmark.py
-cat .yukon/score.json
+cat score.json
 ```
 
 To make a candidate submission, change `submission/score.txt`. Yukon packages only the
 `submission` directory because it is the sole entry in `editablePaths`.
 
 Official validation runs through `.github/workflows/benchmark.yml` and uploads
-`.yukon/score.json` as the result artifact.
+`score.json` as the result artifact.

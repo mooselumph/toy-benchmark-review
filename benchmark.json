@@ -7,7 +7,7 @@
   "editablePaths": ["submission"],
   "setupCommand": ["python3", "-m", "venv", ".venv"],
   "benchmarkCommand": [".venv/bin/python", "benchmark.py"],
-  "scorePath": ".yukon/score.json",
+  "scorePath": "score.json",
   "maxSubmissionBytes": 1024,
   "runner": {
     "provider": "github-actions",
