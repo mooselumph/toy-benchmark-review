@@ -17,5 +17,6 @@ result = {
     "score": score,
     "metrics": {"verificationTimeMs": verification_time_ms},
 }
+score_path.parent.mkdir(parents=True, exist_ok=True)
 score_path.write_text(json.dumps(result) + "\n", encoding="utf-8")
 print(f"score: {score}")
