@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "name": "toy-number",
-  "description": "A toy benchmark whose score is the number in submission/score.txt.",
+  "description": "A toy benchmark that sums numbers from an editable file and directory.",
   "category": "python",
   "direction": "+",
-  "editablePaths": ["submission"],
+  "editablePaths": ["submission/score.txt", "numbers"],
   "setupCommand": ["python3", "-m", "venv", ".venv"],
   "benchmarkCommand": [".venv/bin/python", "benchmark.py"],
   "scorePath": "score.json",
