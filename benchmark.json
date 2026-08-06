@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "name": "toy-number",
+  "description": "A toy benchmark whose score is the number in submission/score.txt.",
+  "category": "python",
+  "direction": "+",
+  "editablePaths": ["submission"],
+  "setupCommand": ["python3", "-m", "venv", ".venv"],
+  "benchmarkCommand": [".venv/bin/python", "benchmark.py"],
+  "scorePath": ".yukon/score.json",
+  "maxSubmissionBytes": 1024,
+  "runner": {
+    "provider": "github-actions",
+    "workflow": "benchmark.yml"
+  }
+}
