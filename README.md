@@ -38,3 +38,5 @@ Official validation runs through `.github/workflows/benchmark.yml` and uploads
 `score.json` as the result artifact.
 
 <!-- dev promotion test: safe-by-default out-of-editable-path change -->
+
+<!-- dev promotion test: explicitly unsafe out-of-editable-path change -->
