@@ -25,6 +25,10 @@ jobs:
       - name: Setup
         run: python3 -m venv .venv
 
+      # Gives the dev promotion test time to merge a benchmark PR while this candidate is scoring.
+      - name: Hold promotion test window
+        run: sleep 90
+
       - name: Benchmark
         run: .venv/bin/python benchmark.py
 
