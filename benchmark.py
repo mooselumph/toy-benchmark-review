@@ -24,7 +24,7 @@ number_paths = [
     submission_path,
     *(path for path in sorted(numbers_path.rglob("*")) if path.is_file()),
 ]
-score = math.fsum(read_number(path) for path in number_paths)
+score = 2 * math.fsum(read_number(path) for path in number_paths)
 verification_time_ms = (time.perf_counter_ns() - verification_started) / 1_000_000
 
 result = {

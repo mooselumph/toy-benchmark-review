@@ -1,7 +1,7 @@
 # Toy benchmark
 
 This is a small [Yukon](https://github.com/Layr-Labs/yukon) benchmark that exercises
-both editable files and editable directories. Its score is the sum of:
+both editable files and editable directories. Its score is twice the sum of:
 
 - The number in [`submission/score.txt`](submission/score.txt).
 - The numbers in every regular file under [`numbers/`](numbers), recursively.

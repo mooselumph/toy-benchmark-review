@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "toy-number",
-  "description": "A toy benchmark that sums numbers from an editable file and directory.",
+  "description": "A toy benchmark that scores twice the sum of numbers from an editable file and directory.",
   "category": "python",
   "direction": "+",
   "editablePaths": ["submission/score.txt", "numbers"],
