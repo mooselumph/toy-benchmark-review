@@ -1,7 +1,8 @@
 {
   "schemaVersion": 1,
-  "name": "toy-number",
-  "description": "A toy benchmark that scores twice the sum of numbers from an editable file and directory.",
+  "name": "toy-number-review",
+  "description": "Manual-review variant of toy-number for Yukon dev end-to-end testing.",
+  "promotionMode": "manual",
   "category": "python",
   "direction": "+",
   "editablePaths": ["submission/score.txt", "numbers"],

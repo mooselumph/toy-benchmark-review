@@ -1,4 +1,4 @@
-# Toy benchmark
+# Toy benchmark — manual review
 
 This is a small [Yukon](https://github.com/Layr-Labs/yukon) benchmark that exercises
 both editable files and editable directories. Its score is twice the sum of:
@@ -36,3 +36,20 @@ manifest declares the file and directory separately in `editablePaths`.
 
 Official validation runs through `.github/workflows/benchmark.yml` and uploads
 `score.json` as the result artifact.
+
+## Manual review on Yukon dev
+
+This variant uses `promotionMode: "manual"`. It preserves the original toy
+evaluator and editable paths. An improving, successfully validated submission
+enters `review`; its candidate branch remains separate from `master` until the
+benchmark owner accepts it. A rejected candidate is not promoted.
+
+The owner reviews through `POST /api/submissions/:id/review` on the dev API,
+providing `decision` (`accept` or `reject`) and `expectedCommitSha` (the exact
+validated candidate commit). An optional `reason` records the decision.
+Acceptance queues promotion only while the score still improves the promoted
+best result; review does not reserve that position.
+
+Use `https://api-dev.yukon.org` for this test repository. It is an integration
+fixture, not a competitive optimization benchmark. The evaluator intentionally
+allows any finite input, so a one-unit input increase raises the score by two.
