@@ -1,17 +1,65 @@
 {
-  "schemaVersion": 1,
-  "name": "toy-number-review",
-  "description": "Manual-review variant of toy-number for Yukon dev end-to-end testing.",
-  "promotionMode": "manual",
-  "category": "python",
-  "direction": "+",
-  "editablePaths": ["submission/score.txt", "numbers"],
-  "setupCommand": ["python3", "-m", "venv", ".venv"],
-  "benchmarkCommand": [".venv/bin/python", "benchmark.py"],
-  "scorePath": "score.json",
-  "maxSubmissionBytes": 1024,
-  "runner": {
-    "provider": "github-actions",
-    "workflow": "benchmark.yml"
-  }
+  "schemaVersion": 2,
+  "name": "toy-number-review-tracks",
+  "independentTracks": true,
+  "tracks": [
+    {
+      "description": "Independent alpha arithmetic lane for manual-promotion testing.",
+      "promotionMode": "manual",
+      "category": "python",
+      "direction": "+",
+      "editablePaths": [
+        "tracks/alpha/submission/score.txt",
+        "tracks/alpha/numbers"
+      ],
+      "setupCommand": [
+        "python3",
+        "-m",
+        "venv",
+        ".venv"
+      ],
+      "benchmarkCommand": [
+        ".venv/bin/python",
+        "benchmark.py",
+        "--track",
+        "alpha"
+      ],
+      "scorePath": "score-alpha.json",
+      "maxSubmissionBytes": 4096,
+      "runner": {
+        "provider": "github-actions",
+        "workflow": "benchmark-alpha.yml"
+      },
+      "name": "alpha"
+    },
+    {
+      "description": "Independent beta arithmetic lane for manual-promotion testing.",
+      "promotionMode": "manual",
+      "category": "python",
+      "direction": "+",
+      "editablePaths": [
+        "tracks/beta/submission/score.txt",
+        "tracks/beta/numbers"
+      ],
+      "setupCommand": [
+        "python3",
+        "-m",
+        "venv",
+        ".venv"
+      ],
+      "benchmarkCommand": [
+        ".venv/bin/python",
+        "benchmark.py",
+        "--track",
+        "beta"
+      ],
+      "scorePath": "score-beta.json",
+      "maxSubmissionBytes": 4096,
+      "runner": {
+        "provider": "github-actions",
+        "workflow": "benchmark-beta.yml"
+      },
+      "name": "beta"
+    }
+  ]
 }

@@ -1,55 +1,54 @@
-# Toy benchmark — manual review
+# Toy benchmark — independent manual-review tracks
 
-This is a small [Yukon](https://github.com/Layr-Labs/yukon) benchmark that exercises
-both editable files and editable directories. Its score is twice the sum of:
+This Yukon dev fixture has two independent tracks, `alpha` and `beta`, on the same
+`master` branch. Both use `promotionMode: "manual"`; top-level
+`independentTracks: true` permits publishing a reviewed candidate after a sibling
+track is promoted, without rerunning validation or scoring.
 
-- The number in [`submission/score.txt`](submission/score.txt).
-- The numbers in every regular file under [`numbers/`](numbers), recursively.
-
-Each input file must contain one finite number. Higher totals are better.
-
-The setup command creates an empty Python virtual environment. The benchmark command
-runs a small trusted evaluator that discovers, reads, and validates the submitted files,
-then writes Yukon's JSON score file to `score.json`. The result includes
-`verificationTimeMs` and `numberFileCount` metrics.
+Each track scores twice the sum of its `submission/score.txt` and every regular
+file under its own `numbers/` directory. Inputs must be finite numbers. Higher
+scores are better. Alpha starts at 26 and beta at 46. The evaluator reports
+`verificationTimeMs` and `numberFileCount`; these are arithmetic test lanes, not
+real optimization tasks.
 
 ## Run locally
 
-With the Yukon CLI:
-
-```sh
-yukon setup
-yukon run
-```
-
-Or run the manifest commands directly:
-
 ```sh
 python3 -m venv .venv
-.venv/bin/python benchmark.py
-cat score.json
+.venv/bin/python benchmark.py --track alpha
+.venv/bin/python benchmark.py --track beta
 ```
 
-To make a candidate submission, change `submission/score.txt`, add or remove files under
-`numbers/`, or edit their contents. Yukon packages exactly those two paths because the
-manifest declares the file and directory separately in `editablePaths`.
+With Yukon configured for `https://api-dev.yukon.org`:
 
-Official validation runs through `.github/workflows/benchmark.yml` and uploads
-`score.json` as the result artifact.
+```sh
+yukon clone mooselumph/toy-number-review-tracks
+yukon setup --track alpha
+yukon run --track alpha
+yukon run --track beta
+```
 
-## Manual review on Yukon dev
+Edit only the selected track's declared paths under `tracks/alpha/` or
+`tracks/beta/`, then submit with `--track`, a public note, and model/harness
+attribution. Each track has a separate workflow and result file. The workflows
+run only on `workflow_dispatch`, so promotion itself does not run the evaluator.
 
-This variant uses `promotionMode: "manual"`. It preserves the original toy
-evaluator and editable paths. An improving, successfully validated submission
-enters `review`; its candidate branch remains separate from `master` until the
-benchmark owner accepts it. A rejected candidate is not promoted.
+## Cross-track promotion test
 
-The owner reviews through `POST /api/submissions/:id/review` on the dev API,
-providing `decision` (`accept` or `reject`) and `expectedCommitSha` (the exact
-validated candidate commit). An optional `reason` records the decision.
-Acceptance queues promotion only while the score still improves the promoted
-best result; review does not reserve that position.
+1. Prepare improving alpha and beta candidates against the same `master` commit.
+2. Submit both and wait until both are in `review`.
+3. Record their exact candidate commits, scores, and workflow run IDs.
+4. Accept alpha and wait until it is promoted.
+5. Accept beta using its original reviewed SHA. Beta must publish on the new tip,
+   preserve alpha's winning files, retain its original score and reviewer history,
+   and create no new validation run.
 
-Use `https://api-dev.yukon.org` for this test repository. It is an integration
-fixture, not a competitive optimization benchmark. The evaluator intentionally
-allows any finite input, so a one-unit input increase raises the score by two.
+The API checks score eligibility independently for each track. Shared verifier,
+workflow, configuration, or selected-track changes still block stale candidates.
+The target branch must permit merge commits. To recover an already failed
+publication, use `retryPromotionJobId` with the original approval and candidate
+SHA on `POST /api/submissions/:id/review`; this retries only publication.
+
+The old root-level inputs, default evaluator invocation, and `benchmark.yml`
+remain for historical fixture compatibility. The former standalone dev benchmark
+retains its history; the schema-v2 challenge is imported under the new name above.

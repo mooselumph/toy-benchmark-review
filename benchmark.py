@@ -1,12 +1,18 @@
+import argparse
 import json
 import math
 import time
 from pathlib import Path
 
 
-submission_path = Path("submission/score.txt")
-numbers_path = Path("numbers")
-score_path = Path("score.json")
+parser = argparse.ArgumentParser()
+parser.add_argument("--track", choices=("alpha", "beta"))
+args = parser.parse_args()
+# Keep the original no-argument evaluator available for historical fixture use.
+track_root = Path("tracks") / args.track if args.track else Path(".")
+submission_path = track_root / "submission/score.txt"
+numbers_path = track_root / "numbers"
+score_path = Path(f"score-{args.track}.json" if args.track else "score.json")
 
 
 def read_number(path: Path) -> float:
