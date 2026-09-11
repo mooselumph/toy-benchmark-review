@@ -1,7 +1,6 @@
 {
   "schemaVersion": 2,
   "name": "toy-number-review-tracks",
-  "independentTracks": true,
   "tracks": [
     {
       "description": "Independent alpha arithmetic lane for manual-promotion testing.",

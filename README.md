@@ -1,13 +1,14 @@
 # Toy benchmark — independent manual-review tracks
 
 This Yukon dev fixture has two independent tracks, `alpha` and `beta`, on the same
-`master` branch. Both use `promotionMode: "manual"`; top-level
-`independentTracks: true` permits publishing a reviewed candidate after a sibling
-track is promoted, without rerunning validation or scoring.
+`master` branch. Both use `promotionMode: "manual"`. This fixture tests Yukon
+PR #721: reviewed submissions use the existing promotion logic when a sibling
+track advances the target branch. No independence manifest flag is required.
 
 Each track scores twice the sum of its `submission/score.txt` and every regular
 file under its own `numbers/` directory. Inputs must be finite numbers. Higher
-scores are better. Alpha starts at 26 and beta at 46. The evaluator reports
+scores are better. The original baselines were 26 for alpha and 46 for beta;
+promoted test submissions increase those values. The evaluator reports
 `verificationTimeMs` and `numberFileCount`; these are arithmetic test lanes, not
 real optimization tasks.
 
@@ -43,11 +44,14 @@ run only on `workflow_dispatch`, so promotion itself does not run the evaluator.
    preserve alpha's winning files, retain its original score and reviewer history,
    and create no new validation run.
 
-The API checks score eligibility independently for each track. Shared verifier,
-workflow, configuration, or selected-track changes still block stale candidates.
-The target branch must permit merge commits. To recover an already failed
-publication, use `retryPromotionJobId` with the original approval and candidate
-SHA on `POST /api/submissions/:id/review`; this retries only publication.
+The API checks score eligibility independently for each track. PR #721 reuses
+automatic promotion: it copies the selected candidate paths onto the new target
+and updates the candidate branch. The review audit retains the original SHA.
+Intervening merged PRs labeled `yukon-unsafe` block GitHub Actions promotion;
+there is no automatic independence check or new failed-promotion retry API.
+These workflows are dispatch-only, so the branch update does not start another
+evaluation. Repositories with PR-triggered evaluation may start an additional
+run before Yukon can cancel it.
 
 The old root-level inputs, default evaluator invocation, and `benchmark.yml`
 remain for historical fixture compatibility. The former standalone dev benchmark
